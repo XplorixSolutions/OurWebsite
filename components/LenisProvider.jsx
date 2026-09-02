@@ -1,0 +1,62 @@
+'use client';
+
+import { useEffect, useRef } from 'react';
+import { usePathname } from 'next/navigation';
+import Lenis from 'lenis';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
+
+export default function LenisProvider({ children }) {
+  const lenisRef = useRef(null);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    // Respect reduced motion
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    
+    const lenis = new Lenis({
+      duration: prefersReducedMotion ? 0.01 : 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      smoothWheel: !prefersReducedMotion,
+    });
+
+    lenisRef.current = lenis;
+    if (typeof window !== 'undefined') {
+      window.__lenis = lenis;
+    }
+
+    lenis.on('scroll', ScrollTrigger.update);
+
+    const updateTicker = (time) => {
+      lenis.raf(time * 1000);
+    };
+
+    gsap.ticker.add(updateTicker);
+    gsap.ticker.lagSmoothing(0);
+
+    return () => {
+      if (typeof window !== 'undefined') {
+        window.__lenis = null;
+      }
+      gsap.ticker.remove(updateTicker);
+      lenis.destroy();
+    };
+  }, []);
+
+  // Ensure every route/tab navigation resets scroll to the very top of the page immediately
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.scrollTo(0, 0);
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+      if (lenisRef.current) {
+        lenisRef.current.scrollTo(0, { immediate: true });
+      }
+    }
+  }, [pathname]);
+
+  return <>{children}</>;
+}
