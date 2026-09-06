@@ -14,37 +14,37 @@ interface ProcessStage {
 const STAGES: ProcessStage[] = [
   {
     label: 'DISCOVER',
-    image: '/images/htbr.jpg',
+    image: '/images/htbr section/discover.jpg',
     desc: 'We map the technical architecture, business goals, and user mental model before touching a single line of code.',
     deliverable: 'Technical Roadmap & Scope Contract',
   },
   {
     label: 'FRAME',
-    image: '/images/htbr2.jpg',
+    image: '/images/htbr section/frame.png',
     desc: 'Defining core data schemas, performance budgets, design tokens, and success metrics up front.',
     deliverable: 'Design Tokens & Schema Spec',
   },
   {
     label: 'DESIGN',
-    image: '/images/htbr3.jpg',
+    image: '/images/htbr section/design.jpg',
     desc: 'Crafting editorial, high-precision interfaces from real content and interactive prototypes — no generic SaaS templates.',
     deliverable: 'High-Fidelity Component System',
   },
   {
     label: 'ENGINEER',
-    image: '/images/htbr4.jpg',
+    image: '/images/htbr section/engineer.png',
     desc: 'Writing clean, resilient, production-grade Next.js, WebGL, and backend code backed by automated testing.',
     deliverable: 'Production Code & API Middleware',
   },
   {
     label: 'SHIP',
-    image: '/images/htbr5.jpg',
+    image: '/images/htbr section/ship.png',
     desc: 'Deploying with real-time telemetry, zero-downtime CI/CD pipelines, and multi-region CDN edge caching.',
     deliverable: 'Production Deployment & Monitoring',
   },
   {
     label: 'EVOLVE',
-    image: '/images/last.jpg',
+    image: '/images/htbr section/evolve.jpg',
     desc: 'Analyzing user telemetry post-launch to continuously refine performance, conversion, and feature sets.',
     deliverable: 'Telemetry Analytics & Iteration Plan',
   },

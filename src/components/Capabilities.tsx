@@ -38,7 +38,7 @@ const CAPABILITIES: CapabilityItem[] = [
   },
   {
     label: 'AI + DATA',
-    image: '/images/Service/AI.jpg',
+    image: '/images/Service/project_01_fintech.jpg',
     variant: 'particles',
     desc: `We integrate custom AI pipelines and machine learning workflows directly into your product stack. From LLM-powered content generation and intelligent search to predictive analytics dashboards and automated decision engines — our data systems transform raw signals into actionable intelligence. Every integration is built with responsible AI principles, robust monitoring, and scalable infrastructure that evolves with your data.`,
   },

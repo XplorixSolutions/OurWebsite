@@ -150,13 +150,13 @@ export default function Hero({
       <div ref={portal} className="absolute inset-0 flex items-center justify-center will-change-transform z-10 pointer-events-none">
         <div
           ref={artwork}
-          className="relative w-[92vw] max-w-[840px] md:w-[62vw] lg:w-[66vw] flex items-center justify-center group transform translate-y-6 md:translate-y-10"
+          className="relative w-[96vw] max-w-[1020px] md:w-[74vw] lg:w-[78vw] flex items-center justify-center group transform translate-y-4 md:translate-y-6"
         >
           <img
             src={activeImageSrc}
             onError={handleImageError}
             alt="Xplorix Cyber Digital Artwork"
-            className="w-full h-auto max-h-[88vh] object-contain object-center filter drop-shadow-[0_25px_50px_rgba(0,0,0,0.65)] transition-transform duration-700 group-hover:scale-105"
+            className="w-full h-auto max-h-[92vh] object-contain object-center filter drop-shadow-[0_25px_50px_rgba(0,0,0,0.65)] transition-transform duration-700 group-hover:scale-105"
           />
         </div>
       </div>
