@@ -39,6 +39,9 @@ const TIMELINE_OPTIONS = [
 
 type Status = 'idle' | 'sending' | 'sent' | 'error'
 
+const TARGET_EMAIL = import.meta.env.VITE_CONTACT_EMAIL || 'info@xplorixsolutions.com'
+const FORM_ENDPOINT = import.meta.env.VITE_FORM_ENDPOINT || `https://formsubmit.co/ajax/${TARGET_EMAIL}`
+
 export default function Contact() {
   const [step, setStep] = useState(0)
   const [build, setBuild] = useState('')
@@ -50,6 +53,7 @@ export default function Contact() {
   const [message, setMessage] = useState('')
   const [honeypot, setHoneypot] = useState('')
   const [status, setStatus] = useState<Status>('idle')
+  const [errorMessage, setErrorMessage] = useState('')
   const [errors, setErrors] = useState<Record<string, string>>({})
 
   const totalSteps = 5
@@ -74,20 +78,78 @@ export default function Contact() {
     if (!validate()) return
 
     setStatus('sending')
+    setErrorMessage('')
+
     try {
-      await new Promise((resolve) => setTimeout(resolve, 900))
-      setStatus('sent')
-    } catch {
+      const payload = {
+        name,
+        email,
+        message,
+        service_requested: build || 'Not specified',
+        priority_focus: priority || 'Not specified',
+        estimated_budget: budget || 'Not specified',
+        desired_timeline: timeline || 'Not specified',
+        _subject: `New Project Brief from ${name} (${build || 'General Inquiry'}) — Xplorix Solutions`,
+        _replyto: email,
+        _template: 'table',
+        _captcha: 'false',
+      }
+
+      const res = await fetch(FORM_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      })
+
+      if (res.ok) {
+        setStatus('sent')
+      } else {
+        const data = await res.json().catch(() => ({}))
+        setErrorMessage(data.message || 'Submission failed. Please try again or send an email directly.')
+        setStatus('error')
+      }
+    } catch (err) {
+      console.error('Form submission error:', err)
+      setErrorMessage('Network transmission error. You can retry or send directly via email client.')
       setStatus('error')
     }
   }
 
+  const mailtoHref = `mailto:${TARGET_EMAIL}?subject=${encodeURIComponent(`Project Inquiry from ${name || 'Client'}`)}&body=${encodeURIComponent(
+    `Name: ${name}\nEmail: ${email}\nService: ${build}\nPriority: ${priority}\nBudget: ${budget}\nTimeline: ${timeline}\n\nProject Details:\n${message}`
+  )}`
+
   if (status === 'sent') {
     return (
       <section id="contact" className="relative min-h-screen w-full flex flex-col items-center justify-center px-6 text-center" style={{ background: 'var(--bean-100)' }}>
-        <p className="meta text-[11px] tracking-[0.2em] mb-4 text-[var(--almond-40)]">TRANSMISSION RECEIVED.</p>
-        <h3 className="text-3xl md:text-5xl font-medium tracking-tight text-[var(--almond-100)] mb-4">THANK YOU.</h3>
-        <p className="max-w-md text-sm md:text-base text-[var(--almond-80)]">We&rsquo;ll reply within 1–2 business days.</p>
+        <div className="w-12 h-12 rounded-full border border-[var(--almond-40)] flex items-center justify-center text-[var(--almond-100)] text-xl mb-6">
+          ✓
+        </div>
+        <p className="meta text-[11px] tracking-[0.2em] mb-3 text-[var(--almond-40)]">TRANSMISSION RECEIVED</p>
+        <h3 className="text-3xl md:text-5xl font-medium tracking-tight text-[var(--almond-100)] mb-4">THANK YOU, {name.toUpperCase()}.</h3>
+        <p className="max-w-md text-sm md:text-base text-[var(--almond-80)] leading-relaxed mb-8">
+          Your project brief has been transmitted to <strong>xplorixsolutions.com</strong> ({TARGET_EMAIL}). We&rsquo;ll review your requirements and reply within 1–2 business days.
+        </p>
+        <button
+          onClick={() => {
+            setStatus('idle')
+            setStep(0)
+            setName('')
+            setEmail('')
+            setMessage('')
+            setBuild('')
+            setPriority('')
+            setBudget('')
+            setTimeline('')
+          }}
+          className="meta text-[11px] tracking-[0.18em] font-semibold px-6 py-3 rounded-full border border-[var(--almond-20)] text-[var(--almond-100)] hover:bg-[var(--almond-12)] hover:border-[var(--almond-40)] transition-all inline-flex items-center gap-2 group cursor-pointer"
+        >
+          <span>SUBMIT ANOTHER BRIEF</span>
+          <span className="group-hover:translate-x-1 transition-transform">→</span>
+        </button>
       </section>
     )
   }
@@ -290,16 +352,35 @@ export default function Contact() {
                 {errors.message && <span className="text-xs mt-1 block" style={{ color: '#e8b4a0' }}>{errors.message}</span>}
               </label>
 
-              <div className="pt-4 flex items-center gap-4">
+              {errorMessage && (
+                <div className="p-4 rounded-lg bg-red-950/40 border border-red-500/30 text-red-200 text-xs leading-relaxed space-y-2">
+                  <p>{errorMessage}</p>
+                  <p className="text-[11px] opacity-80">
+                    Alternatively, send directly via email client to <a href={mailtoHref} className="underline text-[var(--almond-100)] hover:opacity-100">{TARGET_EMAIL}</a>
+                  </p>
+                </div>
+              )}
+
+              <div className="pt-4 flex flex-wrap items-center gap-4">
                 <button
                   type="submit"
                   disabled={status === 'sending'}
                   className="meta text-[12px] tracking-[0.18em] font-semibold px-8 py-4 rounded-full shadow-xl transition-all disabled:opacity-50 inline-flex items-center gap-3 group cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
                   style={{ background: 'var(--almond-100)', color: '#2E0D14' }}
                 >
-                  <span>{status === 'sending' ? 'SENDING SIGNAL...' : status === 'error' ? 'TRY AGAIN' : 'TRANSMIT PROJECT BRIEF'}</span>
+                  <span>{status === 'sending' ? 'TRANSMITTING SIGNAL...' : status === 'error' ? 'RETRY TRANSMISSION' : 'TRANSMIT PROJECT BRIEF'}</span>
                   <span className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform text-sm">↗</span>
                 </button>
+
+                {status === 'error' && (
+                  <a
+                    href={mailtoHref}
+                    className="meta text-[11px] tracking-[0.15em] font-medium px-6 py-4 rounded-full border border-[var(--almond-20)] text-[var(--almond-100)] hover:bg-[var(--almond-12)] transition-all inline-flex items-center gap-2"
+                  >
+                    <span>OPEN EMAIL CLIENT</span>
+                    <span>✉</span>
+                  </a>
+                )}
               </div>
             </form>
           )}

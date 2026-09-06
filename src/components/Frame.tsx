@@ -79,8 +79,11 @@ export default function Frame({ sceneLabel }: Props) {
           })}
         </nav>
 
-        {/* Action CTA */}
+        {/* Action CTA & Scene Indicator */}
         <div className="flex items-center gap-4 z-10">
+          <span className="hidden lg:inline-block meta text-[10px] tracking-widest text-[var(--almond-40)]">
+            [{sceneLabel}]
+          </span>
           <a
             href="#contact"
             className="group inline-flex items-center gap-2 text-xs meta px-5 py-2 rounded-full border border-[var(--almond-40)] text-[var(--almond-100)] hover:bg-[var(--almond-100)] hover:border-[var(--almond-100)] transition-all duration-300 font-semibold shadow-sm hover:shadow-md cursor-pointer"
