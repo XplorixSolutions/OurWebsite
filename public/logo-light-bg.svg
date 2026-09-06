@@ -1,0 +1,31 @@
+<svg width="280" height="64" viewBox="0 0 140 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Icon Mark: Stylized X -->
+  <g>
+    <!-- Top-Left Leaf (Cyan) -->
+    <g transform="rotate(-45, 16, 16)">
+      <path d="M 16 14.5 C 14.5 12, 12 7.5, 12 5.5 C 12 3.5, 14 2, 16 2 C 18 2, 20 3.5, 20 5.5 C 20 7.5, 17.5 12, 16 14.5 Z" fill="#21B3D6" />
+    </g>
+    
+    <!-- Bottom-Right Leaf (Cyan) -->
+    <g transform="rotate(135, 16, 16)">
+      <path d="M 16 14.5 C 14.5 12, 12 7.5, 12 5.5 C 12 3.5, 14 2, 16 2 C 18 2, 20 3.5, 20 5.5 C 20 7.5, 17.5 12, 16 14.5 Z" fill="#21B3D6" />
+    </g>
+    
+    <!-- Top-Right Leaf (Dark) -->
+    <g transform="rotate(45, 16, 16)">
+      <path d="M 16 14.5 C 14.5 12, 12 7.5, 12 5.5 C 12 3.5, 14 2, 16 2 C 18 2, 20 3.5, 20 5.5 C 20 7.5, 17.5 12, 16 14.5 Z" fill="#111827" />
+    </g>
+    
+    <!-- Bottom-Left Leaf (Dark) -->
+    <g transform="rotate(-135, 16, 16)">
+      <path d="M 16 14.5 C 14.5 12, 12 7.5, 12 5.5 C 12 3.5, 14 2, 16 2 C 18 2, 20 3.5, 20 5.5 C 20 7.5, 17.5 12, 16 14.5 Z" fill="#111827" />
+    </g>
+    
+    <!-- Center Diamond -->
+    <path d="M 16 12 L 20 16 L 16 20 L 12 16 Z" fill="#111827" />
+  </g>
+
+  <!-- Brand Text -->
+  <text x="36" y="19" fill="#111827" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="18" letter-spacing="0.04em">XPLORIX</text>
+  <text x="36" y="29" fill="#21B3D6" font-family="system-ui, -apple-system, sans-serif" font-weight="600" font-size="7" letter-spacing="0.45em">SOLUTIONS</text>
+</svg>
